@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "manage-products-mp"
+version = "0.1.0"
+description = ""
+authors = ["sedm1n <4310481@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.12.3"
+fastapi = "^0.115.2"
+sqlalchemy = "^2.0.36"
+asyncpg = "^0.29.0"
+pydantic = "^2.9.2"
+pydantic-settings = "^2.5.2"
+alembic = "^1.13.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
