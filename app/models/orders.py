@@ -1,3 +1,4 @@
+from typing import List
 from sqlalchemy import (Boolean, Computed, DateTime, ForeignKey, Integer,
                         Numeric, String, func)
 from sqlalchemy.orm import relationship, Mapped, mapped_column

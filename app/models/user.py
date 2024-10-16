@@ -25,6 +25,8 @@ class ShippingAddress(Base):
     id:Mapped[int] = mapped_column(Integer(), primary_key=True, index=True)
     address:Mapped[str] = mapped_column(String(150), nullable=False)
     user_id:Mapped[int] = mapped_column(Integer(), ForeignKey("users.id"), nullable=False)
+    
+    user = relationship("User", back_populates="shipping_addresses")
    
 
     
