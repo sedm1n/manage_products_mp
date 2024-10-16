@@ -9,3 +9,11 @@ class SCreateCategory(BaseModel):
     class Config:
         orm_mode = True    
 
+class SCategory(BaseModel):
+    name: str
+    parent_id: Optional[int]
+    slug: str
+    is_active: bool
+    
+    class Config:
+        orm_mode = True    

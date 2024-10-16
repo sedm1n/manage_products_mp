@@ -1,9 +1,10 @@
 from datetime import timedelta
-from fastapi import HTTPException
+
 
 from passlib.context import CryptContext
-from app.crud.user import UserDao
 from pydantic import EmailStr
+
+from .dao.user import UserDao
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-from app.crud.products import ProductDao
+from app.services.dao.product import ProductDao
 from app.schemas.product import SProduct
-from jose import jwt
+
 
 
 router = APIRouter(prefix="/api/products", tags=["products"])

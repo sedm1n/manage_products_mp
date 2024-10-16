@@ -1,10 +1,9 @@
-from fastapi import HTTPException, status, Response
-from app.crud.user import UserDao
+from fastapi import APIRouter, HTTPException, Response, status
+
 from app.schemas.user import SUserAuth, SUserRegister
-from fastapi import APIRouter
-
-from app.auth import authenticate_user, create_access_token, get_password_hash, verify_password
-
+from app.services.auth import (authenticate_user, create_access_token,
+                               get_password_hash, verify_password)
+from app.services.dao.user import UserDao
 
 router = APIRouter(prefix="/api/user", tags=["user"])
 
