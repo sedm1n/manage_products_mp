@@ -16,5 +16,4 @@ class Category(Base):
     def __repr__(self):
         return f"<Category(name={self.name}, parent_id={self.parent_id})>"
 
-    class Config:
-        orm_mode = True    
+    
