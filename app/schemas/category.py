@@ -5,7 +5,8 @@ from pydantic import BaseModel
 class SCreateCategory(BaseModel):
     name: str
     parent_id: Optional[int] = None
-
+    is_active: bool
+    
     class Config:
         orm_mode = True    
 

@@ -29,9 +29,14 @@ async def create_category(category_data:SCreateCategory):
       return {'status_code':status.HTTP_201_CREATED, 'message':'Category created'}
 
 
-@router.put("/detail/{category_slug}")
-async def update_product(category_slug:str):
-      ...
+@router.put("/detail/{category_id}")
+async def update_product(category_id:int, update_data:SCreateCategory):
+      category = await CategoryDao.find_one_or_none(id=category_id)
+      if not category:
+            raise HTTPException(status_code=404, detail=f"Category {category_id} not found")
+      await CategoryDao.update(category_id, **update_data.dict())
+      return {'status_code':status.HTTP_200_OK, 'message':'Category updated'}
+      
 
 
 @router.delete("/delete")
