@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, Response, status, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from app.schemas.user import SUserAuth, SUserRegister
-from app.services.auth import (authenticate_user, create_access_token,
+from app.services.auth import (authenticate_user, create_access_token, get_current_user,
                                get_password_hash, verify_password)
 from app.services.dao.user import UserDao
 from app.backend.config import cfg
@@ -32,10 +32,9 @@ async def register(user_data:SUserRegister):
 
 
 @router.post('/token')
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+async def login(response: Response,form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     
-    user = await authenticate_user(form_data.username, form_data.password)
-    
+    user = await authenticate_user(form_data.username, form_data.password) 
 
     if not user or not user.is_active:
         raise HTTPException(
@@ -45,11 +44,19 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 
     token = await create_access_token(user.username, user.id, user.is_admin, user.is_supplier, user.is_customer,
                                 expires_delta=timedelta(minutes=20))
+    response.set_cookie(key="access_token", value=token, httponly=True)
     return {
         'access_token': token,
         'token_type': 'bearer'
     }
 
+
+@router.get('/logout')
+async def logout(response: Response):
+    response.delete_cookie(key="access_token")
+    return {'message': 'User logged out'}
+
 @router.get('/read_current_user')
-async def read_current_user(user: User = Depends(oauth2_scheme)):
+async def read_current_user(user: User = Depends(get_current_user)):
+
     return user
