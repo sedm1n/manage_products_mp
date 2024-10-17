@@ -1,6 +1,8 @@
 
 from typing import List
 from fastapi import APIRouter, status, HTTPException
+from fastapi.security import OAuth2PasswordBearer
+
 from slugify import slugify
 
 from app.schemas.category import SCategory, SCreateCategory
@@ -8,6 +10,7 @@ from app.services.dao.category import CategoryDao
 
 router = APIRouter(prefix="/api/category", tags=["category"])
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/category/token")
 
 @router.get("/")
 async def get_categories()->List[SCategory]:

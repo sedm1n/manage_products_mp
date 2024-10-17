@@ -8,12 +8,15 @@ class User(Base):
     __tablename__ = "users"
 
     id:Mapped[int] = mapped_column(Integer(), primary_key=True, index=True)
-    username:Mapped[str] = mapped_column(String(), unique=True, index=True, nullable=True)
+    username:Mapped[str] = mapped_column(String(), unique=True, index=True, nullable=False)
     fullname:Mapped[str] = mapped_column(String(), nullable=True)
     email:Mapped[str] = mapped_column(String(), unique=True, index=True, nullable=False)
     hashed_password:Mapped[str] = mapped_column(String(), nullable=False)
     is_active:Mapped[bool] = mapped_column(Boolean(), default=True)
-
+    is_admin : Mapped[bool] = mapped_column(Boolean(), default=False)
+    is_supplier : Mapped[bool] = mapped_column(Boolean(), default=False)
+    is_customer : Mapped[bool] = mapped_column(Boolean(), default=True)
+    
     shipping_addresses = relationship("ShippingAddress", back_populates="user") 
     
     orders = relationship("Order", back_populates="user")  

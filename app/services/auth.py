@@ -26,8 +26,8 @@ def create_access_token(data: dict):
 
 
 
-async def authenticate_user(email:EmailStr, password:str):
-      user = await UserDao.find_one_or_none(email=email)
-      if not user and not verify_password(password, user.hashed_password):
+async def authenticate_user(username:str, password:str):
+      user = await UserDao.find_one_or_none(username=username)
+      if not user or not verify_password(password, user.hashed_password):
             return None
       return user

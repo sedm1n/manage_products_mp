@@ -16,6 +16,8 @@ class Product(Base):
     slug:Mapped[str] = mapped_column(String(120), unique=True, index=True)
     image_url:Mapped[str] = mapped_column(String(200), nullable=True)
     rating:Mapped[Numeric] = mapped_column(Numeric, default=0, nullable=False)
+    supplier_id:Mapped[int] = mapped_column(Integer(), ForeignKey("users.id"), nullable=True)
+
     is_active:Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
     category_id:Mapped[int] = mapped_column(Integer(), ForeignKey("categories.id"), nullable=False)
