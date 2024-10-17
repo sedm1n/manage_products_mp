@@ -8,8 +8,10 @@ class DatabaseConfig(BaseSettings):
       DB_PORT: int
       DB_NAME: str
 
-      model_config = SettingsConfigDict(env_file='app/backend/.env', env_file_encoding='utf-8')
+      SECRET_KEY:str
       
+
+      model_config = SettingsConfigDict(env_file='app/backend/.env', env_file_encoding='utf-8')
       
 
 db_cfg = DatabaseConfig()

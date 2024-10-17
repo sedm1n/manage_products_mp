@@ -18,6 +18,7 @@ python-jose = "^3.3.0"
 passlib = "^1.7.4"
 python-slugify = "^8.0.4"
 uvicorn = "^0.32.0"
+python-jwt = "^4.1.0"
 
 
 [build-system]

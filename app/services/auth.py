@@ -1,6 +1,7 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
-
+import python_jwt as jwt
+from app.backend.config import db_cfg
 from passlib.context import CryptContext
 from pydantic import EmailStr
 
@@ -15,12 +16,12 @@ def get_password_hash(password):
 def verify_password(plain_password, hashed_password):
       return pwd_context.verify(plain_password, hashed_password)
 
-SECRET_KEY= "8sCmO0CxC9uFNsXU20mqKEWLi868jMT5NvJ/quUJn8s="
+
 def create_access_token(data: dict):
       to_encode = data.copy()
       expire = datetime.utcnow() + timedelta(minutes=30)
       to_encode.update({"exp": expire})
-      encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm="HS256")
+      encoded_jwt = jwt.encode(to_encode, db_cfg.SECRET_KEY, algorithm="HS256")
       return encoded_jwt
 
 

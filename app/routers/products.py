@@ -22,13 +22,23 @@ async def get_products_by_category(category_slug: str = None) -> list[SProduct]:
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Category {category_slug} not found",
         )
-    products = await ProductDao.get_all(category_id=category.id)
+    subcategories = await CategoryDao.get_all(parent_id=category.id)
+    category_subcategories =[category.id] + [subcategory.id for subcategory in subcategories]
+
+    products = await ProductDao.get_all(category_id__in=category_subcategories)
+    
     return products
 
 
-@router.post("/detail/{product_slug}")
-async def product_detail(product_slug: str):
-    return await ProductDao.find_one_or_none(slug=product_slug)
+@router.get("/detail/{product_slug}")
+async def product_detail(product_slug: str)-> SProduct:
+    product = await ProductDao.find_one_or_none(slug=product_slug)
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Product {product_slug} not found",
+        )
+    return product
 
 
 @router.post("/create")
