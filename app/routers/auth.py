@@ -8,48 +8,13 @@ from app.schemas.user import SUserAuth, SUserRegister
 from app.services.auth import (authenticate_user, create_access_token,
                                get_password_hash, verify_password)
 from app.services.dao.user import UserDao
-from app.backend.config import db_cfg
+from app.backend.config import cfg
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
-    try:
-        payload = jwt.decode(token, db_cfg.SECRET_KEY, algorithms=['HS256'])
-        username: str = payload.get('sub')
-        user_id: int = payload.get('id')
-        is_admin: str = payload.get('is_admin')
-        is_supplier: str = payload.get('is_supplier')
-        is_customer: str = payload.get('is_customer')
-        expire = payload.get('exp')
-        if username is None or user_id is None:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                                detail='Could not validate user' )
-        if expire is None:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="No access token supplied"
-            )
-        if datetime.now() > datetime.fromtimestamp(expire):
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Token expired!"
-            )
-
-        return {
-            'username': username,
-            'id': user_id,
-            'is_admin': is_admin,
-            'is_supplier': is_supplier,
-            'is_customer': is_customer,
-        }
-    except JWTError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Could not validate user'
-        )
 
 
 @router.post("/register")

@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
-
-from jose import jwt
-from app.backend.config import db_cfg
+from fastapi import Request, HTTPException, Depends, Annotated, status
+from jose import jwt, JWTError
+from app.backend.config import cfg
 from passlib.context import CryptContext
 from pydantic import EmailStr
 
@@ -21,8 +21,7 @@ async def create_access_token(username: str, user_id: int, is_admin: bool, is_su
     encode = {'sub': username, 'id': user_id, 'is_admin': is_admin, 'is_supplier': is_supplier, 'is_customer': is_customer}
     expires = datetime.now() + expires_delta
     encode.update({'exp': expires})
-    return jwt.encode(encode, db_cfg.SECRET_KEY, algorithm='HS256')
-
+    return jwt.encode(encode, cfg.SECRET_KEY, algorithm='HS256')
 
 
 async def authenticate_user(username:str, password:str):
@@ -31,3 +30,44 @@ async def authenticate_user(username:str, password:str):
             return None
       return user
 
+def get_token(request:Request):
+    token = request.cookies.get("access_token")
+    if not token:
+         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No access token supplied")
+    return token
+
+async def get_current_user(token: Annotated[str, Depends(get_token)]):
+    try:
+        payload = jwt.decode(token, cfg.SECRET_KEY, algorithms=['HS256'])
+        username: str = payload.get('sub')
+        user_id: int = payload.get('id')
+        is_admin: str = payload.get('is_admin')
+        is_supplier: str = payload.get('is_supplier')
+        is_customer: str = payload.get('is_customer')
+        expire = payload.get('exp')
+        if username is None or user_id is None:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                detail='Could not validate user' )
+        if expire is None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No access token supplied"
+            )
+        if datetime.now() > datetime.fromtimestamp(expire):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Token expired!"
+            )
+
+        return {
+            'username': username,
+            'id': user_id,
+            'is_admin': is_admin,
+            'is_supplier': is_supplier,
+            'is_customer': is_customer,
+        }
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Could not validate user'
+        )
