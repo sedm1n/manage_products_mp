@@ -15,7 +15,7 @@ class SCreateProduct(BaseModel):
 
     
 class SProduct(BaseModel):
-    
+    id:int
     name: str
     description: str
     price: int

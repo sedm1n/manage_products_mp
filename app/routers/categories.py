@@ -1,5 +1,5 @@
 
-from typing import Dict, List
+from typing import List
 from fastapi import APIRouter, status, HTTPException
 from slugify import slugify
 
@@ -18,9 +18,11 @@ async def get_categories()->List[SCategory]:
 
 @router.post("/create")
 async def create_category(category_data:SCreateCategory):
-      existing_category = await CategoryDao.find_one_or_none(id=category_data.parent_id)
-      if not existing_category:
-            raise HTTPException(status_code=404, detail=f"Parent category {category_data.parent_id} not found")
+      if category_data.parent_id :
+            existing_category = await CategoryDao.find_one_or_none(id=category_data.parent_id)
+            
+            if not existing_category:
+                  raise HTTPException(status_code=404, detail=f"Parent category {category_data.parent_id} not found")
       
       await CategoryDao.add(
             name=category_data.name, 
@@ -30,10 +32,10 @@ async def create_category(category_data:SCreateCategory):
 
 
 @router.put("/detail/{category_id}")
-async def update_product(category_id:int, update_data:SCreateCategory):
+async def update_category(category_id:int, update_data:SCreateCategory):
       category = await CategoryDao.find_one_or_none(id=category_id)
       if not category:
-            raise HTTPException(status_code=404, detail=f"Category {category_id} not found")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Category {category_id} not found")
       await CategoryDao.update(category_id, **update_data.dict())
       return {'status_code':status.HTTP_200_OK, 'message':'Category updated'}
       

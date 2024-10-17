@@ -31,7 +31,9 @@ class BaseDao:
           
       @classmethod
       async def add(cls, **data):
+            
             async with get_async_session() as session:
+                  
                   query = insert(cls.model).values(**data)      
                   await session.execute(query)
                   await session.commit()

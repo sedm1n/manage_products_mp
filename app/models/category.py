@@ -1,4 +1,4 @@
-from email.policy import default
+
 from typing import List, Optional
 
 from app.backend.db import Base
