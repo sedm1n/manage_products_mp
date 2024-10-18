@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+
 from jose import JWTError, jwt
 from typing_extensions import Annotated
 
@@ -13,7 +13,7 @@ from app.services.dao.user import UserDao
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
+
 
 
 
@@ -33,7 +33,7 @@ async def register(user_data:SUserRegister):
 
 
 @router.post('/token')
-async def login(response: Response,form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+async def login(response: Response,form_data: SUserAuth = Depends()):
     
     user = await authenticate_user(form_data.username, form_data.password) 
 
