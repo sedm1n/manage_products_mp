@@ -10,8 +10,8 @@ from app.models.product import Product
 from app.models.user import ShippingAddress, User
 
 
-@pytest.fixture
-async def prepare_db(scope="session", autouse=True):
+@pytest.fixture(scope="session", autouse=True)
+async def prepare_db():
       assert cfg.MODE == "TEST"
 
       async with engine.begin() as conn:
