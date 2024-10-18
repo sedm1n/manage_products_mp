@@ -1,0 +1,68 @@
+[
+      {
+          "id": 1,
+          "name": "iPhone 14",
+          "description": "The latest Apple smartphone with a powerful A15 chip and improved camera.",
+          "price": 999.99,
+          "stock": 50,
+          "slug": "iphone-14",
+          "image_url": "https://example.com/images/iphone14.jpg",
+          "rating": 4.8,
+          "supplier_id": 1,
+          "is_active": true,
+          "category_id": 2
+      },
+      {
+          "id": 2,
+          "name": "MacBook Pro 16",
+          "description": "High-performance laptop with M1 Pro chip, ideal for professional use.",
+          "price": 2499.99,
+          "stock": 30,
+          "slug": "macbook-pro-16",
+          "image_url": "https://example.com/images/macbook-pro-16.jpg",
+          "rating": 4.9,
+          "supplier_id": 2,
+          "is_active": true,
+          "category_id": 3
+      },
+      {
+          "id": 3,
+          "name": "Wireless Charger",
+          "description": "Fast wireless charger compatible with all Qi-enabled devices.",
+          "price": 29.99,
+          "stock": 200,
+          "slug": "wireless-charger",
+          "image_url": "https://example.com/images/wireless-charger.jpg",
+          "rating": 4.5,
+          "supplier_id": 3,
+          "is_active": true,
+          "category_id": 5
+      },
+      {
+          "id": 4,
+          "name": "Samsung Galaxy S21",
+          "description": "Flagship Samsung smartphone with Exynos 2100 processor and 108MP camera.",
+          "price": 799.99,
+          "stock": 80,
+          "slug": "samsung-galaxy-s21",
+          "image_url": "https://example.com/images/samsung-galaxy-s21.jpg",
+          "rating": 4.7,
+          "supplier_id": 1,
+          "is_active": true,
+          "category_id": 2
+      },
+      {
+          "id": 5,
+          "name": "LG OLED TV 55\"",
+          "description": "55-inch OLED TV with 4K resolution and Dolby Vision support.",
+          "price": 1199.99,
+          "stock": 25,
+          "slug": "lg-oled-tv-55",
+          "image_url": "https://example.com/images/lg-oled-tv-55.jpg",
+          "rating": 4.8,
+          "supplier_id": 4,
+          "is_active": false,
+          "category_id": 1
+      }
+  ]
+  

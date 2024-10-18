@@ -2,7 +2,6 @@ from pydantic import BaseModel
 
 
 class SCreateProduct(BaseModel):
-    
     name: str
     description: str
     price: int
@@ -11,11 +10,11 @@ class SCreateProduct(BaseModel):
     category_id: int
 
     class Config:
-        orm_mode = True    
+        orm_mode = True
 
-    
+
 class SProduct(BaseModel):
-    id:int
+    id: int
     name: str
     description: str
     price: int
@@ -24,8 +23,4 @@ class SProduct(BaseModel):
     category_id: int
 
     class Config:
-        orm_mode = True    
-
-
-
-
+        orm_mode = True

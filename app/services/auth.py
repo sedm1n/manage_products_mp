@@ -1,10 +1,12 @@
 from datetime import datetime, timedelta
-from app.models.user import User
-from fastapi import Request, HTTPException, Depends, Annotated, status
-from jose import jwt, JWTError
-from app.backend.config import cfg
+
+from fastapi import Annotated, Depends, HTTPException, Request, status
+from jose import JWTError, jwt
 from passlib.context import CryptContext
-from pydantic import EmailStr
+
+
+from app.backend.config import cfg
+from app.models.user import User
 
 from .dao.user import UserDao
 

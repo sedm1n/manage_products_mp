@@ -1,0 +1,16 @@
+
+MODE=DEV
+
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASSWORD=mysecretpassword
+DB_PORT=5433
+DB_NAME=postgres
+
+TEST_DB_HOST=localhost
+TEST_DB_USER=postgres
+TEST_DB_PASSWORD=mysecretpassword
+TEST_DB_PORT=5433
+TEST_DB_NAME=test_db
+
+SECRET_KEY=61cLKVzYO5Opr+BJsf6KiHqsLPMX1sx0r6q9aIknOyQ=

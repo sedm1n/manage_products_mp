@@ -1,9 +1,9 @@
-
 from typing import List, Optional
 
-from app.backend.db import Base
 from sqlalchemy import Boolean, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.backend.db import Base
 
 
 class Category(Base):

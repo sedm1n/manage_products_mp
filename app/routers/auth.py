@@ -1,14 +1,15 @@
 from datetime import datetime, timedelta
-from typing_extensions import Annotated
-from app.models import User
-from fastapi import APIRouter, HTTPException, Response, status, Depends
+
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import jwt, JWTError
+from jose import JWTError, jwt
+from typing_extensions import Annotated
+
+from app.models import User
 from app.schemas.user import SUserAuth, SUserRegister
-from app.services.auth import (authenticate_user, create_access_token, get_current_user,
-                               get_password_hash, verify_password)
+from app.services.auth import (authenticate_user, create_access_token,
+                               get_current_user, get_password_hash)
 from app.services.dao.user import UserDao
-from app.backend.config import cfg
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 

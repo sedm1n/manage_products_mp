@@ -1,0 +1,53 @@
+[
+      {
+          "username": "john_doe",
+          "fullname": "John Doe",
+          "email": "john.doe@example.com",
+          "hashed_password": "$2b$12$XJx6u1WmFnGbUZkG7LR7gOgIbjkGpBixZ10oGR.vOPZNKbOrD9/uC", 
+          "is_active": true,
+          "is_admin": false,
+          "is_supplier": false,
+          "is_customer": true
+      },
+      {
+          "username": "jane_smith",
+          "fullname": "Jane Smith",
+          "email": "jane.smith@example.com",
+          "hashed_password": "$2b$12$Xn6KbN.O9zWRpKkP0Opg3O.eGpGb.7Jx7bE7VrDbb0Gb7eP2dGKgq",
+          "is_active": true,
+          "is_admin": true,
+          "is_supplier": true,
+          "is_customer": false
+      },
+      {
+          "username": "mark_johnson",
+          "fullname": "Mark Johnson",
+          "email": "mark.johnson@example.com",
+          "hashed_password": "$2b$12$UuZ5S8f3Mw4f9Hc.z1LrQevG67ygV3FNe2u63SLoUoYpDbe2XK.a6",
+          "is_active": true,
+          "is_admin": false,
+          "is_supplier": true,
+          "is_customer": false
+      },
+      {
+          "username": "alice_walker",
+          "fullname": "Alice Walker",
+          "email": "alice.walker@example.com",
+          "hashed_password": "$2b$12$O8Oo74F/XMJrFJd7.y9hv/eX80mKNgWZ9udPdxF6.QQ1pCcY9KJeG",
+          "is_active": true,
+          "is_admin": false,
+          "is_supplier": false,
+          "is_customer": true
+      },
+      {
+          "username": "bob_martin",
+          "fullname": "Bob Martin",
+          "email": "bob.martin@example.com",
+          "hashed_password": "$2b$12$Pkm6FZLzGBFJzGPnx7JrLeO.QRdnHX8CuvHKHjjJUVWrBW4ejF13S",
+          "is_active": false,
+          "is_admin": false,
+          "is_supplier": false,
+          "is_customer": true
+      }
+  ]
+  

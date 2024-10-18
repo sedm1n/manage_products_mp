@@ -7,7 +7,7 @@ from app.backend.db import async_session
 
 @asynccontextmanager
 async def get_async_session() -> AsyncSession:
-      async with async_session() as session:
+    async with async_session() as session:
         try:
             yield session
         finally:
