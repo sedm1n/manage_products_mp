@@ -24,6 +24,9 @@ class User(Base):
     shipping_addresses = relationship("ShippingAddress", back_populates="user")
 
     orders = relationship("Order", back_populates="user")
+    
+    def __repr__(self):
+        return f"<User(name={self.username}, email={self.email}, is_active={self.is_active})>"
 
 
 class ShippingAddress(Base):

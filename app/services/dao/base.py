@@ -9,7 +9,7 @@ class BaseDao:
     @classmethod
     async def find_by_id(cls, model_id: int):
         async with get_async_session() as session:
-            query = select(cls.model).filter_by(model_id=id)
+            query = select(cls.model).filter_by(id=model_id)
             result = await session.execute(query)
 
             return result.scalar_one_or_none()
