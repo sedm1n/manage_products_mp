@@ -3,14 +3,30 @@ import pytest
 
 
 @pytest.mark.parametrize("username, email, password, status_code", [
- ("testuser", "testuser@t.com", "test", 200),
- ("testuser", "testuser@t.com", "test", 409),
+ ("testuser1", "testuser1@t.com", "test", 200),
+ ("testuser1", "testu2ser@t.com", "test", 409),
+ 
+ 
 ])
 async def test_register(username, email, password,status_code,asycn_client:AsyncClient):
       response =await asycn_client.post('/api/auth/register', json={
             "username": username,
             "email": email,
             "password": "test"
+      })
+
+      assert response.status_code == status_code
+
+
+@pytest.mark.parametrize("username, password, status_code", [
+ ("testuser1","test", 200),
+ 
+
+])
+async def test_login(username, password,status_code,asycn_client:AsyncClient):
+      response =await asycn_client.post('/api/auth/login', json={
+            "username": username,
+            "password": password
       })
 
       assert response.status_code == status_code

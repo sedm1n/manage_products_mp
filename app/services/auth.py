@@ -42,7 +42,9 @@ async def create_access_token(
 
 
 async def authenticate_user(username: str, password: str):
+    print(username, password)
     user = await UserDao.find_one_or_none(username=username)
+    
     if not user or not verify_password(password, user.hashed_password):
         return None
     return user

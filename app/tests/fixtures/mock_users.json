@@ -1,14 +1,15 @@
 [
       {
-          "username": "john_doe",
+          "username": "string",
           "fullname": "John Doe",
           "email": "john.doe@example.com",
-          "hashed_password": "$2b$12$XJx6u1WmFnGbUZkG7LR7gOgIbjkGpBixZ10oGR.vOPZNKbOrD9/uC", 
+          "hashed_password": "$2b$12$9gvsRAccr2wgY56lVnGizeusBbzc63OXiw2pKbG9b9WmkiySvLoI2", 
           "is_active": true,
           "is_admin": false,
           "is_supplier": false,
           "is_customer": true
       },
+      
       {
           "username": "jane_smith",
           "fullname": "Jane Smith",

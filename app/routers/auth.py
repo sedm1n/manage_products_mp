@@ -35,11 +35,11 @@ async def register(user_data:SUserRegister):
 
 
 
-@router.post('/token')
-async def login(response: Response,form_data: SUserAuth = Depends()):
+@router.post('/login')
+async def login(response: Response,form_data: SUserAuth):
     
     user = await authenticate_user(form_data.username, form_data.password) 
-
+    print(user)
     if not user or not user.is_active:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
