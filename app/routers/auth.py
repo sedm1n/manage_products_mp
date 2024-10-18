@@ -20,10 +20,13 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 @router.post("/register")
 async def register(user_data:SUserRegister):
-      existing_user = await UserDao.find_one_or_none(email=user_data.username)
+      existing_user = await UserDao.find_one_or_none(username=user_data.username)
       if existing_user:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already exists")
-      
+      existing_email = await UserDao.find_one_or_none(email=user_data.email)
+      if existing_email:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Email {user_data.email} user already exists")
+
       hashed_password = get_password_hash(user_data.password)
       await UserDao.add(username=user_data.username, email=user_data.email, hashed_password=hashed_password)
       return {"message": "User created"}
