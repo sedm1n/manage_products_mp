@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-
-from fastapi import Annotated, Depends, HTTPException, Request, status
+from typing import Annotated
+from fastapi import  Depends, HTTPException, Request, status
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 

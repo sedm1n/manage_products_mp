@@ -22,9 +22,9 @@ async def prepare_db():
             with open(f"app/tests/fixtures/mock_{model}.json") as f:
                   return json.load(f)
             
-      users = open_mock_json("user")
-      products = open_mock_json("product")
-      categories = open_mock_json("category")
+      users = open_mock_json("users")
+      products = open_mock_json("products")
+      categories = open_mock_json("categories")
       # orders = open_mock_json("order")
 
       async with async_session() as session:
@@ -33,7 +33,7 @@ async def prepare_db():
                   add_products = insert(Product).values(products)
                   add_categories = insert(Category).values(categories)
 
-                  for query in [add_users, add_products, add_categories]:
+                  for query in [add_users, add_categories, add_products, ]:
                         await session.execute(query)
 
                   await session.commit()

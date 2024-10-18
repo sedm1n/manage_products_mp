@@ -6,7 +6,7 @@ from app.backend.config import cfg
 
 if cfg.MODE == "TEST":
     DATABASE_URL = f"postgresql+asyncpg://{cfg.TEST_DB_USER}:{cfg.TEST_DB_PASSWORD}@{cfg.TEST_DB_HOST}:{cfg.TEST_DB_PORT}/{cfg.TEST_DB_NAME}"
-    DATABASE_PARAMS = {"poolclass": "NullPool"}
+    DATABASE_PARAMS = {"poolclass": NullPool}
 else:
     DATABASE_URL = f"postgresql+asyncpg://{cfg.DB_USER}:{cfg.DB_PASSWORD}@{cfg.DB_HOST}:{cfg.DB_PORT}/{cfg.DB_NAME}"
     DATABASE_PARAMS = {}
