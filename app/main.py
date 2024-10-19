@@ -19,10 +19,10 @@ async def logging_middleware(request, call_next):
 
         response = await call_next(request)
         if request.status_code in [401, 402, 403, 404]:
-            logger.warning("Request to %s failed ",request.url_path )
+            logger.warning("Request to %s failed ",request.url )
         
     except Exception as e:
-        logger.error("Request to %s failed %s",request.url_path, e, exc_info=True)
+        logger.error("Request to %s failed %s",request.url, e, exc_info=True)
         
    
     return response

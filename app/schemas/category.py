@@ -3,22 +3,24 @@ from typing import Optional
 from pydantic import BaseModel, ConfigDict
 
 
-class SCreateCategory(BaseModel):
+class BaseConfig:
+    from_attributes = True
+
+
+
+
+class CategoryBaseSchema(BaseModel):
     name: str
     parent_id: Optional[int] = None
     is_active: bool
-
-    
         
     model_config = ConfigDict(orm_mode = True) 
     
+class CategoryCreateSchema(CategoryBaseSchema):
+    pass
 
 
-class SCategory(BaseModel):
+class CategoryInfoSchema(CategoryBaseSchema):
     id: int
-    name: str
-    parent_id: Optional[int] = None
     slug: str
-    is_active: bool
-
-    model_config = ConfigDict(orm_mode = True) 
+    

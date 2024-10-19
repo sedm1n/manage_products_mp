@@ -4,14 +4,14 @@ from fastapi import APIRouter, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from slugify import slugify
 
-from app.schemas.category import SCategory, SCreateCategory
+from app.schemas.category import CategoryInfoSchema, CategoryCreateSchema
 from app.services.dao.category import CategoryDao
 
 router = APIRouter(prefix="/api/category", tags=["category"])
 
 
 @router.get("/")
-async def get_categories() -> List[SCategory]:
+async def get_categories() -> List[CategoryInfoSchema]:
     result = await CategoryDao.get_all()
     if result is None:
         raise HTTPException(status_code=404, detail="Categories not found")
@@ -19,7 +19,7 @@ async def get_categories() -> List[SCategory]:
 
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
-async def create_category(category_data: SCreateCategory):
+async def create_category(category_data: CategoryCreateSchema):
     
     if category_data.parent_id:
         
@@ -56,7 +56,7 @@ async def get_category_by_id(category_id: int):
 
 
 @router.put("/detail/{category_id}")
-async def update_category(category_id: int, update_data: SCreateCategory):
+async def update_category(category_id: int, update_data: CategoryCreateSchema):
     category = await CategoryDao.find_one_or_none(id=category_id)
     if not category:
         raise HTTPException(
