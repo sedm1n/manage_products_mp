@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class SCreateCategory(BaseModel):
@@ -8,8 +8,10 @@ class SCreateCategory(BaseModel):
     parent_id: Optional[int] = None
     is_active: bool
 
-    class Config:
-        orm_mode = True
+    
+        
+    model_config = ConfigDict(orm_mode = True) 
+    
 
 
 class SCategory(BaseModel):
@@ -19,5 +21,4 @@ class SCategory(BaseModel):
     slug: str
     is_active: bool
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(orm_mode = True) 

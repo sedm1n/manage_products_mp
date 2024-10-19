@@ -7,12 +7,11 @@ from httpx import AsyncClient
 from sqlalchemy import insert
 
 from app.backend.db import Base, async_session, cfg, engine
-from app.main import app
 from app.models.category import Category
 from app.models.orders import Order, OrderItem
 from app.models.product import Product
 from app.models.user import ShippingAddress, User
-
+from app.main import app
 
 @pytest.fixture(scope="session", autouse=True)
 async def prepare_db():

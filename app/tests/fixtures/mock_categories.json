@@ -1,41 +1,41 @@
 [
       {
-          "id": 1,
+          
           "name": "Electronics",
           "parent_id": null,
           "slug": "electronics",
           "is_active": true
       },
       {
-          "id": 2,
+          
           "name": "Mobile Phones",
           "parent_id": 1,
           "slug": "mobile-phones",
           "is_active": true
       },
       {
-          "id": 3,
+          
           "name": "Laptops",
           "parent_id": 1,
           "slug": "laptops",
           "is_active": true
       },
       {
-          "id": 4,
+          
           "name": "Accessories",
           "parent_id": 1,
           "slug": "accessories",
           "is_active": true
       },
       {
-          "id": 5,
+          
           "name": "Chargers",
           "parent_id": 4,
           "slug": "chargers",
           "is_active": true
       },
       {
-          "id": 6,
+          
           "name": "Home Appliances",
           "parent_id": null,
           "slug": "home-appliances",

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class SCreateProduct(BaseModel):
@@ -9,8 +9,7 @@ class SCreateProduct(BaseModel):
     stock: int
     category_id: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(orm_mode = True) 
 
 
 class SProduct(BaseModel):
@@ -22,5 +21,4 @@ class SProduct(BaseModel):
     stock: int
     category_id: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(orm_mode = True) 
