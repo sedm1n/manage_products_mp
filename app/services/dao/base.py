@@ -1,4 +1,4 @@
-from sqlite3 import IntegrityError
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import delete, insert, select, update
 
 from app.backend.db_depents import get_async_session
@@ -42,8 +42,10 @@ class BaseDao:
                 await session.commit()
                 
                 return result.scalar_one()
+            
+                
             except IntegrityError as e:
-                raise f"{e}"
+                return None
             
 
     @classmethod
