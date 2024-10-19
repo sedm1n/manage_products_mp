@@ -35,6 +35,7 @@ This project is a **FastAPI** application that provides a RESTful API for managi
 - **asyncpg**: Async driver for PostgreSQL.
 - **Pytest**: For unit and integration testing.
 - **Poetry**: Dependency management.
+- **Python json logger**: Logging in json files
 
 ## Getting Started
 
