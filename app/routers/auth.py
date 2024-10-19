@@ -6,7 +6,7 @@ from jose import JWTError, jwt
 from typing_extensions import Annotated
 
 from app.models import User
-from app.schemas.user import SUserAuth, SUserRegister
+from app.schemas.user import UserAuthSchema, UserCreateSchema
 from app.services.auth import (authenticate_user, create_access_token,
                                get_current_user, get_password_hash)
 from app.services.dao.user import UserDao
@@ -19,7 +19,7 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
 @router.post("/register")
-async def register(user_data:SUserRegister):
+async def register(user_data:UserCreateSchema):
       existing_user = await UserDao.find_one_or_none(username=user_data.username)
       if existing_user:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already exists")
@@ -36,7 +36,7 @@ async def register(user_data:SUserRegister):
 
 
 @router.post('/login')
-async def login(response: Response,form_data: SUserAuth):
+async def login(response: Response,form_data: UserAuthSchema):
     
     user = await authenticate_user(form_data.username, form_data.password) 
     print(user)
