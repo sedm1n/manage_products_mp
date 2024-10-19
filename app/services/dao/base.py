@@ -15,28 +15,39 @@ class BaseDao:
             query = select(cls.model).filter_by(id=model_id)
             try:
                 result = await session.execute(query)
+                return result.scalar_one_or_none()
             except SQLAlchemyError as e:
                 extra = {"model_id": model_id}
                 logger.error(e, extra=extra, exc_info=True)
-                
+                return None
 
-            return result.scalar_one_or_none()
+            
 
     @classmethod
     async def find_one_or_none(cls, **filter_by):
         async with get_async_session() as session:
             query = select(cls.model).filter_by(**filter_by)
-            result = await session.execute(query)
-
-            return result.scalar_one_or_none()
+            try:
+                result = await session.execute(query)
+                return result.scalar_one_or_none()
+            
+            except SQLAlchemyError as e:
+                extra = {"filter": filter_by}
+                logger.error(e, extra=extra, exc_info=True)
+                return None
 
     @classmethod
     async def get_all(cls, **filter_by):
         async with get_async_session() as session:
             query = select(cls.model).filter_by(**filter_by)
-            result = await session.execute(query)
-
-            return result.scalars().all()
+            try:
+                result = await session.execute(query)
+                return result.scalars().all()
+            
+            except SQLAlchemyError as e:
+                extra = {"filter_by": filter_by}
+                logger.error(e, extra=extra, exc_info=True)
+                return None
 
     @classmethod
     async def add(cls, **data):
@@ -46,12 +57,13 @@ class BaseDao:
             
             try:
                 result =  await session.execute(query)
-                await session.commit()
-                
+                await session.commit()               
                 return result.scalar_one()
-            
+           
                 
-            except IntegrityError as e:
+            except SQLAlchemyError as e:
+                extra = {"fdata": data}
+                logger.error(e, extra=extra, exc_info=True)
                 return None
             
 
@@ -59,12 +71,24 @@ class BaseDao:
     async def delete(cls, model_id: int):
         async with get_async_session() as session:
             query = delete(cls.model).where(cls.model.id == model_id)
-            await session.execute(query)
-            await session.commit()
+            try:
+                await session.execute(query)
+                await session.commit()
+            
+            except SQLAlchemyError as e:
+                extra = {"model_id": model_id}
+                logger.error(e, extra=extra, exc_info=True)
+                return None
 
     @classmethod
     async def update(cls, model_id: int, **data):
         async with get_async_session() as session:
             query = update(cls.model).where(cls.model.id == model_id).values(**data)
-            await session.execute(query)
-            await session.commit()
+            try:
+                await session.execute(query)
+                await session.commit()
+            
+            except SQLAlchemyError as e:
+                extra = {"model_id": model_id, "data": data}
+                logger.error(e, extra=extra, exc_info=True)
+                return None
