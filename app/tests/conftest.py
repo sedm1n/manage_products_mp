@@ -58,6 +58,17 @@ async def asycn_client():
 
 
 @pytest.fixture(scope="function")
+async def auth_asycn_client():
+      async with AsyncClient(app=app, base_url="http://test") as ac:
+            await ac.post("/api/auth/register", json={"username": "authtestuser1", "email": "authtestuser1@t.com", "password": "test"})
+            await ac.post("/api/auth/login", json={"username": "authtestuser1", "password": "test"})
+
+            assert ac.cookies["access_token"]
+            
+            yield ac
+
+
+@pytest.fixture(scope="function")
 async def session():
       async with async_session() as session:
             yield session

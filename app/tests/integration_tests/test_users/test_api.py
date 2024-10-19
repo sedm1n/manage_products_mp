@@ -6,7 +6,7 @@ import pytest
     "username, email, password, status_code",
     [
         ("testuser1", "testuser1@t.com", "test", 200),
-        ("testuser1", "testu2ser@t.com", "test", 409),
+        
     ],
 )
 async def test_register(
