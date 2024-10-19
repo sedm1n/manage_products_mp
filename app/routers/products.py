@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 from slugify import slugify
 
-from app.schemas.product import SCreateProduct, SProduct
+from app.schemas.product import ProductCreateSchema, ProductInfoSchema
 from app.services.dao.category import CategoryDao
 from app.services.dao.product import ProductDao
 
@@ -9,12 +9,12 @@ router = APIRouter(prefix="/api/products", tags=["products"])
 
 
 @router.get("/")
-async def get_all_products() -> list[SProduct]:
+async def get_all_products() -> list[ProductInfoSchema]:
     return await ProductDao.get_all()
 
 
 @router.get("/{category_slug}")
-async def get_products_by_category(category_slug: str = None) -> list[SProduct]:
+async def get_products_by_category(category_slug: str = None) -> list[ProductInfoSchema]:
     category = await CategoryDao.find_one_or_none(slug=category_slug)
 
     if not category:
@@ -33,7 +33,7 @@ async def get_products_by_category(category_slug: str = None) -> list[SProduct]:
 
 
 @router.get("/detail/{product_slug}")
-async def product_detail(product_slug: str) -> SProduct:
+async def product_detail(product_slug: str) -> ProductInfoSchema:
     product = await ProductDao.find_one_or_none(slug=product_slug)
     if not product:
         raise HTTPException(
@@ -44,7 +44,7 @@ async def product_detail(product_slug: str) -> SProduct:
 
 
 @router.post("/create")
-async def create_product(product_data: SCreateProduct):
+async def create_product(product_data: ProductCreateSchema):
     category = await CategoryDao.find_one_or_none(id=product_data.category_id)
     if not category:
         raise HTTPException(
@@ -60,7 +60,7 @@ async def create_product(product_data: SCreateProduct):
 
 
 @router.put("/detail/{product_slug}")
-async def update_product(product_slug: str, update_data: SCreateProduct):
+async def update_product(product_slug: str, update_data: ProductCreateSchema):
     product = await ProductDao.find_one_or_none(slug=product_slug)
     if not product:
         raise HTTPException(
