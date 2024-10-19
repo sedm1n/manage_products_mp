@@ -1,4 +1,6 @@
-from sqlalchemy.exc import IntegrityError
+from sys import exc_info
+from app import logger
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy import delete, insert, select, update
 
 from app.backend.db_depents import get_async_session
@@ -11,7 +13,12 @@ class BaseDao:
     async def find_by_id(cls, model_id: int):
         async with get_async_session() as session:
             query = select(cls.model).filter_by(id=model_id)
-            result = await session.execute(query)
+            try:
+                result = await session.execute(query)
+            except SQLAlchemyError as e:
+                extra = {"model_id": model_id}
+                logger.error(e, extra=extra, exc_info=True)
+                
 
             return result.scalar_one_or_none()
 
