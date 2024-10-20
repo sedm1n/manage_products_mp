@@ -19,10 +19,10 @@ async def test_find_user_by_id(user_id:int, is_present:bool):
 
 @pytest.mark.parametrize(
       "username, password, email, expected_result",[
-            ("test_create_user1", "test", "email1@ya.ru", True),
-            ("test_create_user2", "test", "email2@ya.ru", True),
-            ("test_create_user2", "test", "email2@ya.ru", False),
-            ("test_create_user3", "test", "email2@ya.ru", False),
+            ("test_create_user1", "test1", "email1@ya.ru", True),
+            ("test_create_user2", "test2", "email2@ya.ru", True),
+            ("test_create_user2", "test3", "email2@ya.ru", False),
+            ("test_create_user3", "test4", "email2@ya.ru", False),
             ("test_create_user3", "", "email2@ya.ru", False),
             ("", "", "email2@ya.ru", False),
             ("", "", "", False),
@@ -31,8 +31,33 @@ async def test_find_user_by_id(user_id:int, is_present:bool):
 async def test_create_user(username:str, password:str, email:str, expected_result:bool):
       new_user = await UserDao.add(
             username=username, hashed_password=password, email=email)
+      
       if expected_result:
             assert new_user is not None
       
       else: 
             assert new_user is None
+
+
+@pytest.mark.parametrize(
+      "username, expected_result",[
+            ("test_create_user1",  True),
+            ("test_create_user2",  True),
+            ("test_create_user2",  False),
+            (1234,  False),
+            ("цукцукцукцукцук",  False),
+            ("", False),
+           
+            ]
+)
+async def test_delete_user(username:str, expected_result:bool):
+      user = await UserDao.find_one_or_none(username = username)
+      
+      if expected_result:
+            assert user is not None
+            assert user.username == username
+            await UserDao.delete(user.id)
+            user = await UserDao.find_one_or_none(username=username)
+            assert user is None
+      else:
+            assert user is None

@@ -33,7 +33,7 @@ class User(Base):
     __table_args__ = (
         CheckConstraint("LENGTH(username) >= 3", name="username_min_length"),
         CheckConstraint("LENGTH(email) > 4", name="email_min_length"),
-        CheckConstraint("LENGTH(hashed_password) > 4", name="hashed_password"),  
+        CheckConstraint("LENGTH(hashed_password) > 4", name="hashed_password_min_length"),  
     )
     
 
@@ -47,3 +47,7 @@ class ShippingAddress(Base):
     )
 
     user = relationship("User", back_populates="shipping_addresses")
+
+
+
+
