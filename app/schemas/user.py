@@ -7,7 +7,6 @@ class UserBaseSchema(BaseModel):
       username:str
       password : str
 
-      model_config = ConfigDict(orm_mode = True)
 
 class UserCreateSchema(UserBaseSchema):
       email : EmailStr

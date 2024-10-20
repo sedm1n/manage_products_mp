@@ -5,13 +5,13 @@ from app.backend.config import cfg
 from pythonjsonlogger import jsonlogger
 
 logger = logging.getLogger()
-logHandler = logging.StreamHandler()
+logHandler = logging.FileHandler("err.log")
 
 class CustomJsonFormatter(jsonlogger.JsonFormatter):
       def add_fields(self, log_record, record, message_dict):
             super(CustomJsonFormatter, self).add_fields(log_record,record, message_dict)
             if not log_record.get('timestamp'):
-                  now = datetime.utcnow().strftime("%Y-%m-%dT %H:%M:%S")
+                  now = datetime.now(datetime.UTC)
                   log_record['timestamp'] = now
             if log_record.get('level'):
                   log_record['level'] = log_record['level'].upper()

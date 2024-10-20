@@ -14,7 +14,7 @@ class CategoryBaseSchema(BaseModel):
     parent_id: Optional[int] = None
     is_active: bool
         
-    model_config = ConfigDict(orm_mode = True) 
+   
     
 class CategoryCreateSchema(CategoryBaseSchema):
     pass

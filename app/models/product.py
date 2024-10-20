@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, ForeignKey, Integer, Numeric, String, Text
+from sqlalchemy import Boolean, ForeignKey, Integer, Numeric, String, Text, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.backend.db import Base
@@ -28,3 +28,9 @@ class Product(Base):
 
     def __repr__(self):
         return f"<Product(name={self.name}, price={self.price}, category_id={self.category_id})>"
+    
+    __table_args__ = (
+        CheckConstraint("LENGTH(name) >= 3", name="name_min_length"),
+        CheckConstraint("LENGTH(slug) >= 3", name="slug_min_length"),
+        
+    )

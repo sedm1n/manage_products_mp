@@ -12,7 +12,7 @@ class ProductBaseSchema(BaseModel):
     category_id: int
     
 
-    model_config = ConfigDict(orm_mode = True)
+  
 
 
 class ProductCreateSchema(ProductBaseSchema):

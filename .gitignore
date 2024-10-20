@@ -13,6 +13,7 @@ coverage.xml
 *.db
 *.txt
 *.lock
+*.log
 env3.*
 .env
 docs_build
