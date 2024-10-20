@@ -1,18 +1,18 @@
-from app.schemas.user import UserCreateSchema
+
 import pytest
 from services.dao.user import UserDao
 
 
 @pytest.mark.parametrize(
-    "user_id, is_present",
+    "user_id, expected_result",
     [
         (1, True),
         (3212, False),
     ],
 )
-async def test_find_user_by_id(user_id: int, is_present: bool):
+async def test_find_user_by_id(user_id: int, expected_result: bool):
     user = await UserDao.find_by_id(user_id)
-    if is_present:
+    if expected_result:
         assert user
         assert user.id == user_id
     else:
@@ -74,14 +74,16 @@ async def test_delete_user(username: str, expected_result: bool):
     "username, password, email, new_username, new_password, new_email, expected_result",
     [
         (
-            "test_create_user4",
-            "test41",
-            "email4@ya.ru",
-            "test_create_user2",
-            "test2",
-            "email2@ya.ru",
-            True,
+            "jane_smith","test41",
+            "john.doe@example.com","test_create_user2",
+            "test2","email2@ya.ru",True,
         ),
+        (
+            "test_create_user4","test41",
+            "email4@ya.ru","test_create_user2",
+            "test2","email2@ya.ru",False,
+        ),
+
     ],
 )
 async def test_update_user(
@@ -99,6 +101,14 @@ async def test_update_user(
 
     if expected_result:
         assert updated_user is not None
+        assert updated_user.username == new_username
+        assert updated_user.email == new_email
+        assert updated_user.hashed_password == new_password
+
+        user = await UserDao.find_one_or_none(username=new_username)
+
+        assert user is not None
+        assert user.username == new_username
 
     else:
         assert updated_user is None
