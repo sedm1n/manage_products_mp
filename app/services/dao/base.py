@@ -82,11 +82,12 @@ class BaseDao:
     @classmethod
     async def update(cls, model_id: int, **data):
         async with get_async_session() as session:
-            query = update(cls.model).where(cls.model.id == model_id).values(**data)
+            query = update(cls.model).where(cls.model.id == model_id).values(**data).returning(cls.model)
             try:
-                await session.execute(query)
+                result = await session.execute(query)
                 await session.commit()
-
+                return result.scalar_one()
+            
             except SQLAlchemyError as e:
                 extra = {"model_id": model_id, "data": data}
                 logger.error(e, extra=extra, exc_info=True)
