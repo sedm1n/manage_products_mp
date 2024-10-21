@@ -34,13 +34,9 @@ async def create_category(category_data: CategoryCreateSchema, user: User = Depe
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Parent category {category_data.parent_id} not found",
             )
-
-    category = await CategoryDao.add(
-        name=category_data.name,
-        parent_id=category_data.parent_id,
-        slug=slugify(category_data.name),
-        is_active=True,
-    )
+    category_dict = category_data.model_dump()
+    category = await CategoryDao.add(**category_dict)  
+    
     return {"category": category, "message": "Category created"}
 
 

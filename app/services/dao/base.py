@@ -61,10 +61,15 @@ class BaseDao:
                 await session.commit()
                 return result.scalar_one()
 
+            except IntegrityError as e:
+                extra = {"data": data}
+                logger.error(e, extra=extra, exc_info=True)
+                raise ValueError("Item already exists!")  
+            
             except SQLAlchemyError as e:
                 extra = {"fdata": data}
                 logger.error(e, extra=extra, exc_info=True)
-                return None
+                raise ValueError("Database error occurred")  
 
     @classmethod
     async def delete(cls, model_id: int):

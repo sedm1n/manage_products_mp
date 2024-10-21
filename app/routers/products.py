@@ -40,12 +40,27 @@ async def create_product(product_data: ProductCreateSchema, user: User = Depends
             detail=f"Category {category.id} not found",
         )
     slug = slugify(product_data.name)
-    data = product_data.dict()
-    data["slug"] = slug
+    product_dict = product_data.model_dump()
+    product_dict["slug"] = slug
+    
+    try:
+        result = await ProductDao.add(**product_dict)
+    
+    except ValueError as e:
+        if str(e) == "Item already exists!":
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Product with the same name or data already exists",
+            )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Internal server error",
+            )
 
-    product = await ProductDao.add(**data)
+    
 
-    return {"product": product, "status_code": "201", "message": "Product created"}
+    return {"product": result, "status_code": "201", "message": "Product created"}
 
 
 @router.put("/detail/{product_slug}")
