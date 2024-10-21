@@ -1,4 +1,3 @@
-
 import pytest
 from services.dao.user import UserDao
 
@@ -46,21 +45,27 @@ async def test_create_user(
         assert new_user is None
 
 
-
 @pytest.mark.parametrize(
     "username, password, email, new_username, new_password, new_email, expected_result",
     [
         (
-            "jane_smith","test41",
-            "john.doe@example.com","test_create_user223",
-            "test223","email223@ya.ru",True,
+            "jane_smith",
+            "test41",
+            "john.doe@example.com",
+            "test_create_user223",
+            "test223",
+            "email223@ya.ru",
+            True,
         ),
         (
-            "test_create_user124","test41",
-            "email4@ya.ru","test_create_user2",
-            "test2","email2@ya.ru",False,
+            "test_create_user124",
+            "test41",
+            "email4@ya.ru",
+            "test_create_user2",
+            "test2",
+            "email2@ya.ru",
+            False,
         ),
-
     ],
 )
 async def test_update_user(
@@ -69,13 +74,19 @@ async def test_update_user(
     email: str,
     new_username,
     new_password,
-    new_email, expected_result: bool,
+    new_email,
+    expected_result: bool,
 ):
     user = await UserDao.find_one_or_none(username=username)
-    
+
     if expected_result:
-        updated_user = await UserDao.update(user.id, username=new_username, hashed_password=new_password, email=new_email)
-        
+        updated_user = await UserDao.update(
+            user.id,
+            username=new_username,
+            hashed_password=new_password,
+            email=new_email,
+        )
+
         assert updated_user is not None
         assert updated_user.username == new_username
         assert updated_user.email == new_email
@@ -112,4 +123,3 @@ async def test_delete_user(username: str, expected_result: bool):
         assert user is None
     else:
         assert user is None
-
