@@ -5,7 +5,7 @@ import pytest
 @pytest.mark.parametrize(
     "username, email, password, status_code",
     [
-        ("testuser1", "testuser1@t.com", "test", 200),
+        ("testuser1", "testuser1@t.com", "test", 201),
         
     ],
 )

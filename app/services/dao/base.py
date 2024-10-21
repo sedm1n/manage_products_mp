@@ -1,9 +1,9 @@
-from sys import exc_info
-from app.logger import logger
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from asyncpg.exceptions import ForeignKeyViolationError
 from sqlalchemy import delete, insert, select, update
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from app.backend.db_depents import get_async_session
+from app.logger import logger
 
 
 class BaseDao:
@@ -60,14 +60,14 @@ class BaseDao:
                 result = await session.execute(query)
                 await session.commit()
                 return result.scalar_one()
-
+            
             except IntegrityError as e:
                 extra = {"data": data}
                 logger.error(e, extra=extra, exc_info=True)
-                raise ValueError("Item already exists!")  
+                raise ValueError("Item already exists! or Violate ForeignKey")  
             
             except SQLAlchemyError as e:
-                extra = {"fdata": data}
+                extra = {"data": data}
                 logger.error(e, extra=extra, exc_info=True)
                 raise ValueError("Database error occurred")  
 

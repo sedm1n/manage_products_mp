@@ -22,7 +22,7 @@ class Product(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
     category_id: Mapped[int] = mapped_column(
-        Integer(), ForeignKey("categories.id"), nullable=False
+        Integer(), ForeignKey("categories.id", ondelete="CASCADE"),nullable=False
     )
     category: Mapped["Category"] = relationship("Category", back_populates="products")
 

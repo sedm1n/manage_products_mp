@@ -32,10 +32,12 @@ async def test_add_and_get_category(name: str, slug: str, parent_id: int, is_act
         assert get_category.is_active == is_active
 
     else:
-        new_category = await CategoryDao.add(
+        with pytest.raises(ValueError, match="Item already exists! or Violate ForeignKey"):
+        
+            await CategoryDao.add(
             name=name, parent_id=parent_id, slug=slug, is_active=is_active
             )
 
-        assert new_category is None
+        
 
     

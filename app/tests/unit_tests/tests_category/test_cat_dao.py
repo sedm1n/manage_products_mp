@@ -21,9 +21,9 @@ async def test_find_category_by_id(category_id: int, expected_result: bool):
 @pytest.mark.parametrize(
     "name, slug, parent_id, is_active, expected_result",
     [
-        ("category_test1", "category_test1", None, True, True),
-        ("category_test2", "category_test2", 1, True, True),
-        ("category_test3", "category_test3", 1, False, True),
+        ("test_create_category1", "test_create_category1", None, True, True),
+        ("test_create_category2", "test_create_category2", 1, True, True),
+        ("test_create_category3", "test_create_category3", 1, False, True),
         ("category_test4", "category_test4", 150, True, False),
         ("", "category_test5", None, False, False),
         ("", "", None, None, False),
@@ -33,29 +33,41 @@ async def test_find_category_by_id(category_id: int, expected_result: bool):
 async def test_create_category(
     name: str, slug: str, parent_id: int, is_active: bool, expected_result: bool
 ):
-    new_category = await CategoryDao.add(
-        name=name, slug=slug, parent_id=parent_id, is_active=is_active
-    )
+    
 
     if expected_result:
+        new_category = await CategoryDao.add(
+        name=name, slug=slug, parent_id=parent_id, is_active=is_active
+    )
         assert new_category is not None
 
     else:
-        assert new_category is None
+        with pytest.raises(
+            ValueError, match="Item already exists! or Violate ForeignKey"
+        ):
+            await CategoryDao.add(
+                name=name, slug=slug, parent_id=parent_id, is_active=is_active
+            )
 
 
 @pytest.mark.parametrize(
     "name, new_name, new_slug, new_parent_id,new_is_active ,expected_result",
     [
         (
-            "category_test3",
+            "test_create_category1",
             "new_category_test",
-            "new_category_test",2,False,True,
+            "new_category_test",
+            2,
+            False,
+            True,
         ),
         (
             "category_test31",
             "new_category_test",
-            "new_category_test", 2, False, False,
+            "new_category_test",
+            2,
+            False,
+            False,
         ),
     ],
 )
@@ -69,16 +81,14 @@ async def test_update_category(
 ):
     category = await CategoryDao.find_one_or_none(name=name)
 
-    
-
     if expected_result:
         updated_category = await CategoryDao.update(
-        category.id,
-        name=new_name,
-        slug=new_slug,
-        parent_id=new_parent_id,
-        is_active=new_is_active,
-    )
+            category.id,
+            name=new_name,
+            slug=new_slug,
+            parent_id=new_parent_id,
+            is_active=new_is_active,
+        )
 
         assert updated_category is not None
         assert updated_category.name == new_name
@@ -97,9 +107,9 @@ async def test_update_category(
 @pytest.mark.parametrize(
     "name, expected_result",
     [
-        ("category_test1", True),
-        ("category_test2", True),
-        ("category_test2", False),
+        ("Home Appliances", True),
+        ("Chargers", True),
+        ("category_test31322", False),
         (1234, False),
         ("", False),
     ],
@@ -111,6 +121,7 @@ async def test_delete_category(name: str, expected_result: bool):
         assert category is not None
         assert category.name == name
         await CategoryDao.delete(category.id)
+        
         category = await CategoryDao.find_one_or_none(name=name)
         assert category is None
     else:

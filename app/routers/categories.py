@@ -22,7 +22,13 @@ async def get_categories() -> List[CategoryInfoSchema]:
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
 async def create_category(category_data: CategoryCreateSchema, user: User = Depends(get_current_user)):
-    
+    exist_category = await CategoryDao.find_one_or_none(name=category_data.name)
+    if exist_category:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Category with the same name already exists",
+        )
+
     if category_data.parent_id:
         
         existing_category = await CategoryDao.find_one_or_none(
@@ -34,7 +40,9 @@ async def create_category(category_data: CategoryCreateSchema, user: User = Depe
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Parent category {category_data.parent_id} not found",
             )
+    
     category_dict = category_data.model_dump()
+    category_dict["slug"] = slugify(category_data.name)
     category = await CategoryDao.add(**category_dict)  
     
     return {"category": category, "message": "Category created"}

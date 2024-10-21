@@ -25,7 +25,7 @@ class Category(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
     products: Mapped[List["Product"]] = relationship(
-        "Product", back_populates="category"
+        "Product", back_populates="category", cascade="all, delete-orphan")
     )
 
     def __repr__(self):
