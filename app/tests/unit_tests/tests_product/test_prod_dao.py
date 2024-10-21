@@ -74,7 +74,7 @@ async def test_create_product(
     "name, new_name, new_slug, new_category_id,new_price,new_stock,new_image_url,new_supplier_id,new_rating,new_is_active ,expected_result",
     [
         (
-            "test_create_product1",
+            "iPhone 14",
             "new_test_create_product1",
             "new_test_create_product1",
             2,
@@ -117,6 +117,7 @@ async def test_update_product(
     product = await ProductDao.find_one_or_none(name=name)
 
     if expected_result:
+        assert product is not None
         updated_product = await ProductDao.update(
             product.id,
             name=new_name,
