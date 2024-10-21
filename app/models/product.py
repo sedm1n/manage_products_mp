@@ -10,11 +10,11 @@ class Product(Base):
     id: Mapped[int] = mapped_column(Integer(), primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(120), index=True, nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=True)
-    price: Mapped[Numeric] = mapped_column(Numeric, default=0, nullable=False)
+    price: Mapped[Numeric] = mapped_column(Numeric(10, 2), default=0, nullable=False)
     stock: Mapped[int] = mapped_column(Integer(), default=0, nullable=False)
     slug: Mapped[str] = mapped_column(String(120), unique=True, index=True)
     image_url: Mapped[str] = mapped_column(String(200), nullable=True)
-    rating: Mapped[Numeric] = mapped_column(Numeric, default=0, nullable=False)
+    rating: Mapped[Numeric] = mapped_column(Numeric(5, 2), default=0, nullable=False)
     supplier_id: Mapped[int] = mapped_column(
         Integer(), ForeignKey("users.id"), nullable=True
     )

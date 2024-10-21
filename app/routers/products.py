@@ -1,9 +1,11 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from slugify import slugify
 
 from app.schemas.product import ProductCreateSchema, ProductInfoSchema
+from app.models.user import User
 from app.services.dao.category import CategoryDao
 from app.services.dao.product import ProductDao
+from app.services.auth import get_current_user
 
 router = APIRouter(prefix="/api/products", tags=["products"])
 
@@ -13,28 +15,13 @@ async def get_all_products() -> list[ProductInfoSchema]:
     return await ProductDao.get_all()
 
 
-@router.get("/{category_slug}")
-async def get_products_by_category(category_slug: str = None) -> list[ProductInfoSchema]:
-    category = await CategoryDao.find_one_or_none(slug=category_slug)
-
-    if not category:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Category {category_slug} not found",
-        )
-    subcategories = await CategoryDao.get_all(parent_id=category.id)
-    category_subcategories = [category.id] + [
-        subcategory.id for subcategory in subcategories
-    ]
-
-    products = await ProductDao.get_all(category_id__in=category_subcategories)
-
-    return products
 
 
 @router.get("/detail/{product_slug}")
 async def product_detail(product_slug: str) -> ProductInfoSchema:
+   
     product = await ProductDao.find_one_or_none(slug=product_slug)
+   
     if not product:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -43,9 +30,10 @@ async def product_detail(product_slug: str) -> ProductInfoSchema:
     return product
 
 
-@router.post("/create")
-async def create_product(product_data: ProductCreateSchema):
-    category = await CategoryDao.find_one_or_none(id=product_data.category_id)
+@router.post("/create", status_code=status.HTTP_201_CREATED)
+async def create_product(product_data: ProductCreateSchema, user: User = Depends(get_current_user)):
+    category = await CategoryDao.find_by_id(product_data.category_id)
+    
     if not category:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -54,13 +42,14 @@ async def create_product(product_data: ProductCreateSchema):
     slug = slugify(product_data.name)
     data = product_data.dict()
     data["slug"] = slug
-    await ProductDao.add(**data)
 
-    return {"status_code": status.HTTP_201_CREATED, "message": "Product created"}
+    product = await ProductDao.add(**data)
+
+    return {"product": product, "status_code": "201", "message": "Product created"}
 
 
 @router.put("/detail/{product_slug}")
-async def update_product(product_slug: str, update_data: ProductCreateSchema):
+async def update_product(product_slug: str, update_data: ProductCreateSchema, user: User = Depends(get_current_user)):
     product = await ProductDao.find_one_or_none(slug=product_slug)
     if not product:
         raise HTTPException(
@@ -73,7 +62,7 @@ async def update_product(product_slug: str, update_data: ProductCreateSchema):
 
 
 @router.delete("/delete")
-async def delete_product(product_id: int):
+async def delete_product(product_id: int, user: User = Depends(get_current_user)):
     existing_product = await ProductDao.find_one_or_none(id=product_id)
     if not existing_product:
         raise HTTPException(status_code=404, detail=f"Product {product_id} not found")

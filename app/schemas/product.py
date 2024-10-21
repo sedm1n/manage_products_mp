@@ -1,14 +1,17 @@
-from pydantic import BaseModel, ConfigDict
+from typing import Optional
+from decimal import Decimal
+from pydantic import BaseModel
+
 
 class BaseConfig:
     from_attributes = True
 
 class ProductBaseSchema(BaseModel):
     name: str
-    description: str
-    price: int
-    image_url: str
-    stock: int
+    description: Optional[str]
+    price: Optional[Decimal]
+    image_url: Optional[str]
+    stock: Optional[int]
     category_id: int
     
 
@@ -21,11 +24,9 @@ class ProductCreateSchema(ProductBaseSchema):
 
 class ProductInfoSchema(ProductBaseSchema):
     id: int
-    name: str
-    description: str
-    price: int
-    image_url: str
-    stock: int
-    category_id: int
+    slug: str
+    
+    
+    
 
     

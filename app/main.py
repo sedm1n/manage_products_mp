@@ -13,19 +13,6 @@ app.include_router(products.router)
 app.include_router(auth.router)
 
 
-@app.middleware("http")
-async def logging_middleware(request, call_next):
-    try:
-
-        response = await call_next(request)
-        if response.status_code in [401, 402, 403, 404]:
-            logger.warning("Request to %s failed ",request.url.path )
-        
-    except Exception as e:
-        logger.error("Request to %s failed %s",request.url.path, e, exc_info=True)
-        
-   
-    return response
 
 
 if __name__ == "__main__":
