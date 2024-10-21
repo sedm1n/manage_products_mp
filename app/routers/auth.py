@@ -56,7 +56,7 @@ async def login(response: Response,form_data: UserAuthSchema):
 
 
 @router.get('/logout')
-async def logout(response: Response):
+async def logout(response: Response, user: User = Depends(get_current_user)):
     response.delete_cookie(key="access_token")
     return {'message': 'User logged out'}
 

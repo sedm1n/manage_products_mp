@@ -1,10 +1,11 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import APIRouter, HTTPException, status, Depends
 from slugify import slugify
 
-from app.schemas.category import CategoryInfoSchema, CategoryCreateSchema
+from app.schemas.category import CategoryCreateSchema, CategoryInfoSchema
+from app.schemas.user import UserAuthSchema
+from app.services.auth import get_current_user
 from app.services.dao.category import CategoryDao
 
 router = APIRouter(prefix="/api/category", tags=["category"])
@@ -19,7 +20,7 @@ async def get_categories() -> List[CategoryInfoSchema]:
 
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
-async def create_category(category_data: CategoryCreateSchema):
+async def create_category(category_data: CategoryCreateSchema, user: UserAuthSchema = Depends(get_current_user)):
     
     if category_data.parent_id:
         

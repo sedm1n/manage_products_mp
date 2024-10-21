@@ -80,12 +80,12 @@ async def get_current_user(token: Annotated[str, Depends(get_token)]):
     
     expire = payload.get("exp")
     
-    if (expire is None) or (int(expire) < datetime.now(datetime.UTC).timestamp()):
+    if (expire is None) or (int(expire) < datetime.utcnow().timestamp()):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="No access token supplied"
         )
     
-    user = await UserDao.find_by_id(id=int(user_id))
+    user = await UserDao.find_by_id(int(user_id))
     if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return user 
