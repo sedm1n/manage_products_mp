@@ -11,7 +11,7 @@ class Order(Base):
 
     id: Mapped[int] = mapped_column(Integer(), primary_key=True, index=True)
     user_id: Mapped[int] = mapped_column(
-        Integer(), ForeignKey("users.id"), nullable=False
+        Integer(), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
     shipping_address_id: Mapped[int] = mapped_column(
         Integer(), ForeignKey("shipping_addresses.id"), nullable=False
@@ -25,7 +25,7 @@ class Order(Base):
         DateTime, nullable=False, default=func.now(), onupdate=func.now()
     )
 
-    order_items: Mapped[List["OrderItem"]] = relationship("OrderItem", backref="order")
+    order_items: Mapped[List["OrderItem"]] = relationship("OrderItem", backref="order", cascade="all, delete-orphan")
     user: Mapped["User"] = relationship("User", back_populates="orders")
 
     @property
@@ -41,7 +41,7 @@ class OrderItem(Base):
         Integer(), ForeignKey("orders.id"), nullable=False
     )
     product_id: Mapped[int] = mapped_column(
-        Integer(), ForeignKey("products.id"), nullable=False
+        Integer(), ForeignKey("products.id", ondelete="CASCADE"), nullable=False
     )
     price: Mapped[Numeric] = mapped_column(Numeric, nullable=False)
     quantity: Mapped[int] = mapped_column(Integer(), default=1, nullable=False)
